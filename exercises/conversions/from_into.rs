@@ -34,6 +34,23 @@ impl Default for Person {
 // Otherwise, then return an instantiated Person onject with the results
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        let mut ret = Person::default();
+        if s.len() == 0 {
+            return ret;
+        }
+
+        // TODO fine a decently elegant way to write this
+        for (idx, val) in s.split(",").enumerate() {
+            match idx {
+                0 => ret.name = String::from(val),
+                1 => match val.parse::<usize>() {
+                    Ok(age) => ret.age = age,
+                    Err(_) => return Person::default()
+                },
+                _ => return ret
+            }
+        }
+        ret
     }
 }
 
