@@ -5,9 +5,14 @@
 
 // Write a macro that passes the test! No hints this time, you can do it!
 
-// I AM NOT DONE
+macro_rules! my_macro {
+    ($val:expr) => {
+        format!("Hello {}", $val);
+    }
+}
 
 #[cfg(test)]
+#[macro_use]
 mod tests {
     use super::*;
 
