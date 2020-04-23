@@ -10,7 +10,6 @@ struct Person {
     age: usize,
 }
 
-// I AM NOT DONE
 // Your task is to complete this implementation
 // in order for the line `let p = Person::try_from("Mark,20")` to compile
 // and return an Ok result of inner type Person.
@@ -26,8 +25,22 @@ struct Person {
 // If while parsing the age, something goes wrong, then return an error
 // Otherwise, then return a Result of a Person object
 impl TryFrom<&str> for Person {
-    type Error = String;
+    type Error = String;  // <- https://doc.rust-lang.org/book/ch19-03-advanced-traits.html
     fn try_from(s: &str) -> Result<Self, Self::Error> {
+        let mut ret = Person {name: String::from(""), age: 0};
+        if s.len() == 0 {
+            return Err(String::from("Zero length"));
+        }
+        let splitted : Vec<&str> = s.split(",").collect();
+        if splitted.len() != 2 {
+            return Err(String::from("Wrong length"));
+        }
+        ret.name = String::from(splitted[0]);
+        match splitted[1].parse::<usize>() {
+            Ok(age) => ret.age = age,
+            _ => return Err(String::from("Unparsable age"))
+        }
+        Ok(ret)
     }
 }
 
